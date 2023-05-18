@@ -98,7 +98,7 @@ describe('parcels', () => {
     containerId = containerResponse.body.id;
   });
 
-  describe('/api/companies/:companyId/containers/parcels', () => {
+  describe('/api/companies/:companyId/containers/:containerId/parcels', () => {
     describe('PUT /process', () => {
       it('should process all the parcels of a container based on business rules', async () => {
         const response1 = await processParcels(companyId, containerId);
