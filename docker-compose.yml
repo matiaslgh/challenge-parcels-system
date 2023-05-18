@@ -1,0 +1,53 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      target: production
+    ports:
+      - '3001:3001'
+    depends_on:
+      - migrations
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: parcels
+      PORT: 3001
+    volumes:
+      - ./backend/src:/app/src
+
+  db:
+    image: postgres:15.2
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: parcels
+    ports:
+      - '5432:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready --username user --dbname=parcels']
+      interval: 2s
+      timeout: 5s
+      retries: 5
+
+  migrations:
+    build:
+      context: ./backend
+      target: migrations
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: parcels
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db-data:

@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      target: development
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./backend:/app
+    ports:
+      - 3001:3001
+      - 9229:9229
+  adminer:
+    image: adminer:latest
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8080:8080
