@@ -1,32 +1,67 @@
-# Technical Assessment
+# Challenge: Parcels System
 
-## Short Description
+This repository showcases my skills using TypeScript, Node.js, React, and Next.js. It includes an implementation of a parcel handling system for a delivery company.
 
-You have been assigned a project to develop an automated system for handling parcels within a delivery company. The goal is to streamline the internal processes at the distribution center by assigning parcels to different departments based on their weight and value. It's important to design the system in a way that allows for easy adaptation to potential future changes in the department structure.
+## Challenge Description
 
-## Features
+The challenge is to develop an automated system for handling parcels within a delivery company. The system should assign parcels to different departments based on their weight and value. Detailed requirements can be found in the [challenge-description.md](challenge-description.md) file.
 
-### Feature 1
+## Project Overview
 
-The current handling rules for parcels are as follows:
+The project consists of a backend and a frontend application. The frontend is currently under development.
 
-- Parcels weighing up to 1 kg should be assigned to the "Mail" department.
-- Parcels weighing up to 10 kg should be assigned to the "Regular" department.
-- Parcels weighing over 10 kg should be assigned to the "Heavy" department.
+### Backend
 
-### Feature 2
+The backend application is built with Node.js and TypeScript. It handles server-side logic, database interactions, and API endpoints. The backend uses a PostgreSQL database and can be run using Docker.
 
-Parcels with a value exceeding €1000 should undergo a review process by the "Insurance" department before being processed by other departments.
+To set up the backend, follow these steps:
 
-### Feature 3 (optional)
+1. Install the dependencies: `yarn`
+2. Ensure Docker is installed and running on your machine.
+3. Start the backend server in development mode: `yarn dev:backend` (run this command from the root of the project)
 
-As part of the long-term plan, the company intends to commercialize the software and offer it as a subscription-based product. The system should allow for customizable business rules to accommodate different customer requirements.
+There are several scripts in the `package.json` file at the root level for running tests and watching for changes. To run the tests, both unit and integration, use `yarn test:backend`.
 
-## Exercise
+For development, it's recommended to keep the tests running in the background using `yarn watch:backend`. This command continuously runs the tests and provides immediate feedback on any issues.
 
-Your tasks for this assessment include:
+Running `yarn dev:backend` also sets up an adminer service running on port 8080. You can access the adminer interface by visiting `http://localhost:8080` and logging in with the following credentials:
 
-- Parsing the provided XML file (Container_68465468.xml)
-- Developing a functional application using a programming language and frameworks of your choice
-- Writing unit tests to ensure code reliability and correctness
-- Creating a presentation showcasing the application, which may include a user interface or a console application
+- System: PostgreSQL
+- Server: db
+- Username: user
+- Password: password
+- Database: parcels
+
+The `.nvmrc` file specifies the Node.js version used in the project. If you're using nvm, you can switch to the correct version by running `nvm use` in the project directory.
+
+By default the backend runs in port 3001.
+
+## Backend Endpoints
+
+The backend exposes the following endpoints:
+
+- `GET /health`: Check the health of the application.
+
+- `POST /api/companies`: Create a new company.
+- `GET /api/companies`: Get a list of all companies.
+- `GET /api/companies/:companyId`: Get details of a specific company.
+
+- `POST /api/companies/:companyId/business-rules`: Create business rules for a company.
+- `GET /api/companies/:companyId/business-rules`: Get business rules for a company.
+
+- `POST /api/companies/:companyId/containers`: Create a new container for a company.
+- `GET /api/companies/:companyId/containers`: Get a list of containers for a company.
+- `GET /api/companies/:companyId/containers/:containerId`: Get details of a specific container.
+
+- `PUT /api/companies/:companyId/containers/:containerId/parcels/process`: Process the parcels in a container.
+- `GET /api/companies/:companyId/parcels/:parcelId`: Get details of a specific parcel.
+
+## Debugging with Visual Studio Code
+
+The project is configured for debugging with Visual Studio Code. To debug the backend server, use the provided launch configuration. Set breakpoints in your code and start the debugging session to step through the code and inspect variables.
+
+## Next Steps
+
+The next steps for the project involve developing a user interface using Next.js to provide a seamless frontend experience.
+
+Please note that this project is an implementation of a coding challenge and is meant for demonstration purposes only.
