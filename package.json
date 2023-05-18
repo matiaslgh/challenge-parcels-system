@@ -1,0 +1,12 @@
+{
+  "license": "MIT",
+  "scripts": {
+    "dev:backend": "cd backend && docker-compose up",
+    "test:backend": "cd backend && yarn test",
+    "test:backend:unit": "cd backend && yarn test:unit",
+    "test:backend:integration": "cd backend && yarn test:integration",
+    "watch:backend": "cd backend && yarn watch",
+    "watch:backend:unit": "cd backend && yarn watch:unit",
+    "watch:backend:integration": "cd backend && yarn watch:integration"
+  }
+}
