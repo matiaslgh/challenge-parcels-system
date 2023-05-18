@@ -16,7 +16,7 @@ The backend application is built with Node.js and TypeScript. It handles server-
 
 To set up the backend, follow these steps:
 
-1. Install the dependencies: `yarn`
+1. Install the dependencies: `cd backend && yarn && cd ..`
 2. Ensure Docker is installed and running on your machine.
 3. Start the backend server in development mode: `yarn dev:backend` (run this command from the root of the project)
 
@@ -55,6 +55,20 @@ The backend exposes the following endpoints:
 
 - `PUT /api/companies/:companyId/containers/:containerId/parcels/process`: Process the parcels in a container.
 - `GET /api/companies/:companyId/parcels/:parcelId`: Get details of a specific parcel.
+
+## File Structure
+
+The backend project follows a component-based structure:
+
+- `src/components`: Contains different components of the application, such as containers, parcels, and companies.
+  - `validation.ts`: Contains input validations for data coming from external sources.
+  - `logic.ts`: Implements the business logic of the component.
+  - `routes.ts`: Exposes the API endpoints and handles HTTP-level logic.
+  - `dal.ts`: Interacts with the database using the Data Access Layer.
+
+Then, a typical flow involves receiving a request in the middleware defined in `routes.ts`, running validations by importing them from `validation.ts`, and then calling a function from `logic.ts`. This approach ensures that the data received by `logic.ts` is of the expected shape and can be trusted. The `logic.ts` file solely interacts with the data through the Data Access Layer (DAL).
+
+Migrations for the database are located in `src/database/migrations` and are performed using Knex. The migrations are executed automatically before starting the backend server.
 
 ## Debugging with Visual Studio Code
 
