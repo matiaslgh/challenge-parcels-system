@@ -3,11 +3,11 @@ import { StatusCodes } from 'http-status-codes';
 import request, { Response } from 'supertest';
 
 import { createCompany, createBusinessRules, createContainer } from './test-utils';
+import app from '../src/app';
 import { BusinessRule } from '../src/components/business-rules';
 import { ContainerInput } from '../src/components/containers';
 import { END_DEPARTMENT, START_DEPARTMENT, ParcelDbParsed, ParcelInput } from '../src/components/parcels';
 import { pool } from '../src/database/connection';
-import app from '../src/index';
 
 const parcelInput1: ParcelInput = {
   recipient: {

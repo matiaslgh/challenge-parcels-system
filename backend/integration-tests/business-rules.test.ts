@@ -3,9 +3,9 @@ import { StatusCodes } from 'http-status-codes';
 import request from 'supertest';
 
 import { createBusinessRules, createCompany } from './test-utils';
+import app from '../src/app';
 import { BusinessRule } from '../src/components/business-rules';
 import { pool } from '../src/database/connection';
-import app from '../src/index';
 
 describe('/api/companies/:companyId/business-rules', () => {
   afterEach(async () => {

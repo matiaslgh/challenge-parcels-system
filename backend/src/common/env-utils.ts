@@ -29,7 +29,3 @@ export function isProd(): boolean {
 export function isDev(): boolean {
   return getEnvironment() === Environment.Dev;
 }
-
-export function isTest(): boolean {
-  return getEnvironment() === Environment.Test;
-}

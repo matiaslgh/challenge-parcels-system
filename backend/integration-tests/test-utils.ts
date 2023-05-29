@@ -1,9 +1,9 @@
 import request, { Response } from 'supertest';
 
+import app from '../src/app';
 import { BusinessRule } from '../src/components/business-rules';
 import { CompanyInput } from '../src/components/companies';
 import { ContainerInput } from '../src/components/containers';
-import app from '../src/index';
 
 const DEFAULT_COMPANY_OUTPUT: CompanyInput = { name: 'company-1' };
 export async function createCompany(partialCompanyInput: Partial<CompanyInput> = {}): Promise<Response> {
