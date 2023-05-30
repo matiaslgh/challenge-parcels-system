@@ -1,3 +1,5 @@
+import { PoolClient } from 'pg';
+
 import { BusinessRule, BusinessRulesDb, BusinessRulesDbParsed } from './types';
 import { pool } from '../../database/connection';
 
@@ -11,7 +13,11 @@ function parseBusinessRulesDb(businessRulesFromDb: BusinessRulesDb): BusinessRul
   };
 }
 
-export async function saveBusinessRules(rules: BusinessRule[], companyId: string): Promise<BusinessRulesDbParsed> {
+export async function saveBusinessRules(
+  rules: BusinessRule[],
+  companyId: string,
+  transactionClient: PoolClient,
+): Promise<BusinessRulesDbParsed> {
   const businessRulesJson = JSON.stringify(rules);
 
   const query = `
@@ -22,7 +28,7 @@ export async function saveBusinessRules(rules: BusinessRule[], companyId: string
     RETURNING *;
   `;
 
-  const result = await pool.query<BusinessRulesDb>(query, [companyId, businessRulesJson]);
+  const result = await transactionClient.query<BusinessRulesDb>(query, [companyId, businessRulesJson]);
 
   return parseBusinessRulesDb(result.rows[0]);
 }

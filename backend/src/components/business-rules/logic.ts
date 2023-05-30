@@ -1,5 +1,6 @@
 import * as dal from './dal';
 import { BusinessRule, BusinessRulesDbParsed } from './types';
+import { executeInTransaction } from '../../common/db-utils';
 import { getCompany } from '../companies';
 import { ParcelToSave } from '../parcels';
 
@@ -39,9 +40,11 @@ export function findDepartment(parcel: ParcelToSave, rules: BusinessRule[]): str
 }
 
 export async function saveBusinessRules(companyId: string, rules: BusinessRule[]): Promise<BusinessRulesDbParsed> {
-  // Throws NotFoundError if companyId does not exist
-  await getCompany(companyId);
-  return await dal.saveBusinessRules(rules, companyId);
+  return executeInTransaction(async transactionClient => {
+    // Throws NotFoundError if companyId does not exist
+    await getCompany(companyId, transactionClient);
+    return await dal.saveBusinessRules(rules, companyId, transactionClient);
+  });
 }
 
 export async function getBusinessRules(companyId: string): Promise<BusinessRulesDbParsed | null> {

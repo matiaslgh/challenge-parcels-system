@@ -1,3 +1,7 @@
+import { PoolClient } from 'pg';
+
+import { pool } from '../database/connection';
+
 /**
  * Converts a camelCase string to snake_case.
  * @param str - The camelCase string to convert.
@@ -68,4 +72,38 @@ export function generateInsertData<T>(
   const placeholdersString = placeholders.join(', ');
 
   return { placeholders: placeholdersString, values, snakeCasedPropertyNames };
+}
+
+/**
+ * Executes a provided operation within a PostgreSQL transaction using a client from the connection pool.
+ * @param operation - A function that performs database operations using the provided client.
+ *                  This function should return a Promise that resolves to the result of the operation.
+ * @returns A Promise that resolves to the result of the operation if the transaction is successful,
+ *          or rejects with the error that caused the transaction to fail.
+ *
+ * @example
+ * const result = await executeInTransaction(async (client) => {
+ *   const res1 = await client.query('SELECT * FROM table1');
+ *   const res2 = await client.query('SELECT * FROM table2');
+ *   return [res1.rows, res2.rows];
+ * });
+ *
+ * console.log(result);
+ * // Output: Array of rows from table1 and table2
+ *
+ * @throws Will throw an error if the operation fails at any point, causing the transaction to be rolled back.
+ */
+export async function executeInTransaction<T>(operation: (client: PoolClient) => Promise<T>): Promise<T> {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const result = await operation(client);
+    await client.query('COMMIT');
+    return result;
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
 }

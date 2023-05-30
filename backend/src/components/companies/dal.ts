@@ -1,4 +1,4 @@
-import { DatabaseError, QueryResult } from 'pg';
+import { DatabaseError, PoolClient, QueryResult } from 'pg';
 import { PostgresError } from 'pg-error-enum';
 
 import { CompanyDb, CompanyDbParsed, CompanyInput } from './types';
@@ -20,10 +20,11 @@ export async function getCompanies(): Promise<CompanyDbParsed[]> {
   return results.rows.map(parseCompanyDb);
 }
 
-export async function getCompany(companyId: string): Promise<CompanyDbParsed> {
+export async function getCompany(companyId: string, transactionClient?: PoolClient): Promise<CompanyDbParsed> {
+  const client = transactionClient ?? pool;
   const query = 'SELECT * FROM companies WHERE id = $1;';
   const values = [companyId];
-  const result = await pool.query<CompanyDb>(query, values);
+  const result = await client.query<CompanyDb>(query, values);
   if (result.rowCount === 0) {
     throw new NotFoundError(`Company with id ${companyId} does not exist`);
   }
