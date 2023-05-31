@@ -1,3 +1,5 @@
+import { PoolClient } from 'pg';
+
 import { ParcelDb, ParcelDbParsed, ParcelToSave } from './types';
 import { parseParcelDb } from './utils';
 import { NotFoundError } from '../../common/app-error';
@@ -7,7 +9,7 @@ import { pool } from '../../database/connection';
 /**
  * Saves the given parcels to the database, if it already exists it gets updated.
  */
-export async function saveParcels(parcels: ParcelToSave[]): Promise<ParcelDbParsed[]> {
+export async function saveParcels(parcels: ParcelToSave[], transactionClient: PoolClient): Promise<ParcelDbParsed[]> {
   if (parcels.length === 0) {
     return [];
   }
@@ -26,13 +28,18 @@ export async function saveParcels(parcels: ParcelToSave[]): Promise<ParcelDbPars
       ${snakeCasedPropertyNames.map(name => `${name} = EXCLUDED.${name}`).join(', ')}, updated_at = NOW()
     RETURNING *;`;
 
-  const result = await pool.query<ParcelDb>(query, values);
+  const result = await transactionClient.query<ParcelDb>(query, values);
   return result.rows.map(parseParcelDb);
 }
 
-export async function getParcels(companyId: string, containerId: string): Promise<ParcelDbParsed[]> {
+export async function getParcels(
+  companyId: string,
+  containerId: string,
+  transactionClient?: PoolClient,
+): Promise<ParcelDbParsed[]> {
+  const client = transactionClient ?? pool;
   const query = 'SELECT * FROM parcels WHERE company_id = $1 AND container_id = $2;';
-  const result = await pool.query<ParcelDb>(query, [companyId, containerId]);
+  const result = await client.query<ParcelDb>(query, [companyId, containerId]);
   return result.rows.map(parseParcelDb);
 }
 

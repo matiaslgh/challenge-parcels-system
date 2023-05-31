@@ -33,9 +33,13 @@ export async function saveBusinessRules(
   return parseBusinessRulesDb(result.rows[0]);
 }
 
-export async function getBusinessRules(companyId: string): Promise<BusinessRulesDbParsed | null> {
+export async function getBusinessRules(
+  companyId: string,
+  transactionClient?: PoolClient,
+): Promise<BusinessRulesDbParsed | null> {
+  const client = transactionClient ?? pool;
   const query = 'SELECT * from business_rules WHERE company_id = $1;';
-  const result = await pool.query<BusinessRulesDb>(query, [companyId]);
+  const result = await client.query<BusinessRulesDb>(query, [companyId]);
   if (result.rowCount === 0) {
     return null;
   }

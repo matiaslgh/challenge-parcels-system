@@ -1,3 +1,5 @@
+import { PoolClient } from 'pg';
+
 import * as dal from './dal';
 import { BusinessRule, BusinessRulesDbParsed } from './types';
 import { executeInTransaction } from '../../common/db-utils';
@@ -47,6 +49,9 @@ export async function saveBusinessRules(companyId: string, rules: BusinessRule[]
   });
 }
 
-export async function getBusinessRules(companyId: string): Promise<BusinessRulesDbParsed | null> {
-  return await dal.getBusinessRules(companyId);
+export async function getBusinessRules(
+  companyId: string,
+  transactionClient?: PoolClient,
+): Promise<BusinessRulesDbParsed | null> {
+  return await dal.getBusinessRules(companyId, transactionClient);
 }

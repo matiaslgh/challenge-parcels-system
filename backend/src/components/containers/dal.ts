@@ -1,3 +1,5 @@
+import { PoolClient } from 'pg';
+
 import { ContainerDb, ContainerDbParsed, ContainerDbParsedWithParcels, ContainerInput } from './types';
 import { NotFoundError } from '../../common/app-error';
 import { pool } from '../../database/connection';
@@ -33,7 +35,9 @@ function parseContainerDbWithParcelsDb(
 export async function saveContainer(
   companyId: string,
   containerInput: Omit<ContainerInput, 'parcels'>,
+  transactionClient?: PoolClient,
 ): Promise<ContainerDbParsed> {
+  const client = transactionClient ?? pool;
   const query = `
     INSERT INTO containers (id, company_id, shipping_date)
     VALUES ($1, $2, $3)
@@ -42,7 +46,7 @@ export async function saveContainer(
     RETURNING *;
   `;
 
-  const result = await pool.query<ContainerDb>(query, [containerInput.id, companyId, containerInput.shippingDate]);
+  const result = await client.query<ContainerDb>(query, [containerInput.id, companyId, containerInput.shippingDate]);
   return parseContainerDb(result.rows[0]);
 }
 
@@ -88,9 +92,14 @@ export async function getContainers(companyId: string): Promise<ContainerDbParse
 /**
  * Retrieves a container with associated parcels for the specified company and container id.
  */
-export async function getContainer(companyId: string, containerId: string): Promise<ContainerDbParsedWithParcels> {
+export async function getContainer(
+  companyId: string,
+  containerId: string,
+  transactionClient?: PoolClient,
+): Promise<ContainerDbParsedWithParcels> {
+  const client = transactionClient ?? pool;
   const query = buildGetContainerQuery('containers.company_id = $1 AND containers.id = $2');
-  const result = await pool.query<ContainerWithParcelsDb>(query, [companyId, containerId]);
+  const result = await client.query<ContainerWithParcelsDb>(query, [companyId, containerId]);
   if (result.rowCount === 0) {
     throw new NotFoundError(`Container ${containerId} not found for company ${companyId}`);
   }
