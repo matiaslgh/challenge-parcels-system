@@ -5,6 +5,26 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Company } from '../types';
 
+interface BoxProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+function Box({ children, title }: BoxProps) {
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-black">
+      <div className="relative w-full max-w-md max-h-full">
+        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+          <div className="px-6 py-6 lg:px-8">
+            <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">{title}</h3>
+            <div className="space-y-6">{children}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function NewCompanyPage() {
   const [name, setName] = useState('');
   const router = useRouter();
@@ -31,42 +51,35 @@ export default function NewCompanyPage() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5">
-        <form onSubmit={handleSubmit}>
-          <div className="p-10">
-            <div className="mx-auto max-w-2xl text-center pb-5">
-              <h1 className="font-bold tracking-tight text-gray-900 text-2xl">Create a new company</h1>
-            </div>
-            <div className="flex flex-col pt-5">
-              <label htmlFor="companyName" className="block text-sm font-semibold leading-6 text-gray-900">
-                Company name
-              </label>
-              <div className="mt-2.5">
-                <input
-                  type="text"
-                  name="companyName"
-                  id="companyName"
-                  autoComplete="given-name"
-                  onChange={event => setName(event.target.value)}
-                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="flex divide-x divide-gray-900/5 bg-gray-50">
-            <button
-              type="submit"
-              className="items-center justify-center p-3 w-3/6 font-semibold text-gray-900 hover:bg-gray-100"
-            >
-              Create
-            </button>
-            <div className="flex items-center justify-center p-3 w-3/6 font-semibold text-gray-900 hover:bg-gray-100">
-              <Link href="/">Cancel</Link>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
+    <Box title="Create a new company">
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="companyName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            Company name
+          </label>
+          <input
+            type="text"
+            id="companyName"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            required
+            onChange={event => setName(event.target.value)}
+          />
+        </div>
+        <div className="flex items-center pt-6 space-x-2">
+          <button
+            type="submit"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Create
+          </button>
+          <Link
+            href="/"
+            className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+          >
+            Cancel
+          </Link>
+        </div>
+      </form>
+    </Box>
   );
 }
