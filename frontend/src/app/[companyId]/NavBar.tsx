@@ -1,20 +1,9 @@
 'use client';
 
+import { getCompany } from '@/api/companies';
 import { CubeIcon, TableCellsIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Company } from '../types';
-
-async function getCompany(companyId: string): Promise<Company> {
-  // TODO: Use env variables
-  const res = await fetch(`http://localhost:3001/api/companies/${companyId}`, { cache: 'no-store' });
-  if (!res.ok) {
-    // TODO: Handle error
-    throw new Error('Failed to fetch data');
-  }
-
-  return res.json();
-}
 
 interface NavBarProps {
   companyId: string;

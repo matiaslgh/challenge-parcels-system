@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Company } from '../types';
+import { upsertCompany } from '@/api/companies';
 
 interface BoxProps {
   title: string;
@@ -31,23 +32,15 @@ export default function NewCompanyPage() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // TODO: Use env variables
-    const response = await fetch('http://localhost:3001/api/companies', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name }),
-      cache: 'no-store',
-    });
 
-    if (!response.ok) {
+    const company = await upsertCompany({ name });
+
+    if (company === null) {
       // TODO: Handle error
       console.error('There was an error creating the company');
-      return;
+    } else {
+      router.push(`/${company.id}/containers`);
     }
-    const company: Company = await response.json();
-    router.push(`/${company.id}/containers`);
   };
 
   return (

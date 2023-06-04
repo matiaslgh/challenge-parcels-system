@@ -1,16 +1,6 @@
 import Link from 'next/link';
 import { Company } from './types';
-
-async function getCompanies(): Promise<Company[]> {
-  // TODO: Use env variables
-  const res = await fetch('http://localhost:3001/api/companies', { cache: 'no-store' });
-  if (!res.ok) {
-    // TODO: Handle error
-    throw new Error('Failed to fetch data');
-  }
-
-  return res.json();
-}
+import { getCompanies } from '@/api/companies';
 
 interface CompanyPickerBoxProps {
   title: string;
