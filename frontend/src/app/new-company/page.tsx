@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Company } from '../types';
 import { upsertCompany } from '@/api/companies';
 
 interface BoxProps {
