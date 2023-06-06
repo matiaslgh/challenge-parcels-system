@@ -1,28 +1,29 @@
 'use client';
 
-import { getCompany } from '@/api/companies';
 import { CubeIcon, TableCellsIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Company } from '@/app/types';
 
-interface NavBarProps {
-  companyId: string;
+interface SideBarProps {
+  company: Company;
 }
-export default async function NavBar({ companyId }: NavBarProps) {
+
+export default function SideBar({ company }: SideBarProps) {
+  console.log('SideBar');
   const pathName = usePathname();
-  const company = await getCompany(companyId);
   const navigation = [
     {
       name: 'Containers',
-      href: `/${companyId}/containers`,
+      href: `/${company.id}/containers`,
       icon: CubeIcon,
-      current: pathName === `/${companyId}/containers`,
+      current: pathName === `/${company.id}/containers`,
     },
     {
       name: 'Business Rules',
-      href: `/${companyId}/business-rules`,
+      href: `/${company.id}/business-rules`,
       icon: TableCellsIcon,
-      current: pathName === `/${companyId}/business-rules`,
+      current: pathName === `/${company.id}/business-rules`,
     },
   ];
   return (
