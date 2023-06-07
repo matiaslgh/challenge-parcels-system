@@ -10,7 +10,6 @@ interface SideBarProps {
 }
 
 export default function SideBar({ company }: SideBarProps) {
-  console.log('SideBar');
   const pathName = usePathname();
   const navigation = [
     {

@@ -15,7 +15,6 @@ export async function getCompanies(): Promise<Company[]> {
 }
 
 export async function getCompany(companyId: string): Promise<Company> {
-  console.log(buildApiUrl(`${RESOURCE}/${companyId}`));
   const response = await fetch(buildApiUrl(`${RESOURCE}/${companyId}`), { cache: 'no-store' });
   if (!response.ok) {
     throw new Error('Failed to fetch data');

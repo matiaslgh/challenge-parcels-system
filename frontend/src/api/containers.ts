@@ -6,6 +6,15 @@ function buildUrl(companyId: string) {
   return buildApiUrl(`companies/${companyId}/${RESOURCE}`);
 }
 
+export async function getContainers(companyId: string): Promise<ContainerDbParsedWithParcels[]> {
+  const response = await fetch(buildUrl(companyId), { cache: 'no-store' });
+  if (!response.ok) {
+    console.error(`There was an error getting containers for company ${companyId}`);
+    return [];
+  }
+  return await response.json();
+}
+
 export async function upsertContainer(
   companyId: string,
   input: ContainerInput,
