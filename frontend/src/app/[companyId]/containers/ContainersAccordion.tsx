@@ -3,6 +3,7 @@
 import { ContainerDbParsedWithParcels } from '@/app/types';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { useCallback, useState } from 'react';
+import ParcelsTable from './ParcelsTable';
 
 interface ContainersAccordionProps {
   containers: ContainerDbParsedWithParcels[];
@@ -40,7 +41,7 @@ export default function ContainersAccordion({ containers }: ContainersAccordionP
             aria-labelledby={`accordion-collapse-heading-${container.id}`}
           >
             <div className="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
-              <p className="mb-2 text-gray-500 dark:text-gray-400">TODO: Show parcels</p>
+              <ParcelsTable parcels={container.parcels} />
             </div>
           </div>
         </div>
