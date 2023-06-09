@@ -1,6 +1,6 @@
 'use client';
 
-import { ContainerDbParsedWithParcels } from '@/app/types';
+import { ContainerDbParsedWithParcels, ParcelDbParsed } from '@/app/types';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { useCallback, useState } from 'react';
 import ParcelsTable from './ParcelsTable';
@@ -28,7 +28,9 @@ export default function ContainersAccordion({ containers }: ContainersAccordionP
               aria-controls={`accordion-collapse-body-${container.id}`}
               onClick={() => handleToggle(container.id)}
             >
-              <span>Shipping date: {toHumanReadable(container.shippingDate)} - TODO: Show status</span>
+              <span>
+                <Status parcels={container.parcels} /> Shipping date: {toHumanReadable(container.shippingDate)}
+              </span>
               <ChevronDownIcon
                 className={openContainerId === container.id ? 'w-6 h-6' : 'w-6 h-6 rotate-180 shrink-0'}
                 fill="currentColor"
@@ -59,4 +61,23 @@ function toHumanReadable(strDate: string): string {
   const timePart = date.toTimeString().split(' ')[0].substring(0, 5);
 
   return `${datePart} at ${timePart}`;
+}
+
+interface StatusProps {
+  parcels: ParcelDbParsed[];
+}
+function Status({ parcels }: StatusProps) {
+  const areThereParcelsThatNeedToBeMoved = parcels.some(parcel => parcel.targetDepartment !== 'Finished');
+  if (areThereParcelsThatNeedToBeMoved) {
+    return (
+      <span className="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
+        Not finished
+      </span>
+    );
+  }
+  return (
+    <span className="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+      Finished
+    </span>
+  );
 }
