@@ -62,3 +62,14 @@ export interface ParcelDbParsed extends ParcelToSave {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface BusinessRule {
+  id: number;
+  name: string;
+  sourceDepartment?: string;
+  targetDepartment: string;
+  minWeight?: number;
+  maxWeight?: number;
+  minValue?: number;
+  maxValue?: number;
+}
