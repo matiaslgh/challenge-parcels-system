@@ -1,9 +1,8 @@
 'use client';
 
-import { ReactSortable } from 'react-sortablejs';
+import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import { BusinessRule } from '@/app/types';
 import { ChangeEventHandler, useState } from 'react';
-import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import TopBar from './TopBar';
 
 interface BusinessRulesPageProps {
@@ -15,27 +14,23 @@ interface BusinessRulesPageProps {
 export default function BusinessRulesPage({ params: { companyId } }: BusinessRulesPageProps) {
   const [businessRules, setBusinessRules] = useState<BusinessRule[]>([
     {
-      id: 1,
       name: 'needs-insurance',
       sourceDepartment: 'Distribution center',
       targetDepartment: 'Insurance',
       minValue: 1000,
     },
     {
-      id: 2,
       name: 'less-than-1kg',
       targetDepartment: 'Mail',
       maxWeight: 1,
     },
     {
-      id: 3,
       name: 'between-1kg-and-10kg',
       targetDepartment: 'Regular',
       minWeight: 1,
       maxWeight: 10,
     },
     {
-      id: 4,
       name: 'over-10kg',
       targetDepartment: 'Heavy',
       minWeight: 10,
@@ -43,7 +38,22 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
   ]);
 
   // TODO: Fix
-  const addRule = () => setBusinessRules(previous => [{ id: 5, name: 'asd', targetDepartment: 'asd' }, ...previous]);
+  const addRule = () =>
+    setBusinessRules(previous => [
+      { name: `new-rule-${Math.floor(Math.random() * 10000)}`, targetDepartment: 'Finished' },
+      ...previous,
+    ]);
+
+  const handleOnDragEnd: OnDragEndResponder = result => {
+    if (!result.destination) return;
+
+    setBusinessRules(previous => {
+      const items = Array.from(previous);
+      const [reorderedItem] = items.splice(result.source.index, 1);
+      items.splice(result.destination!.index, 0, reorderedItem);
+      return items;
+    });
+  };
 
   return (
     <div className="sm:ml-64">
@@ -57,36 +67,48 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
           Add rule
         </button>
 
-        <ReactSortable list={businessRules} setList={setBusinessRules} animation={200} handle={'.draggable'}>
-          {businessRules.map(rule => (
-            <div
-              key={rule.id}
-              className="relative block mt-2 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
-            >
-              <ChevronUpDownIcon className="draggable cursor-grab absolute top-1 left-1 w-5 h-5" fill="currentColor" />
-              <table>
-                <tr>
-                  <td className="pl-2 pr-2">Price</td>
-                  <td className="pl-2 pr-2">
-                    <Input placeholder="Min" value={rule.minValue} onChange={() => {}} />
-                  </td>
-                  <td className="pl-2 pr-2">
-                    <Input placeholder="Max" value={rule.maxValue} onChange={() => {}} />
-                  </td>
-                </tr>
-                <tr>
-                  <td className="pl-2 pr-2">Weight</td>
-                  <td className="pl-2 pr-2">
-                    <Input placeholder="Min" value={rule.minWeight} onChange={() => {}} />
-                  </td>
-                  <td className="pl-2 pr-2">
-                    <Input placeholder="Max" value={rule.maxWeight} onChange={() => {}} />
-                  </td>
-                </tr>
-              </table>
-            </div>
-          ))}
-        </ReactSortable>
+        <DragDropContext onDragEnd={handleOnDragEnd}>
+          <Droppable droppableId="droppable-section">
+            {provided => (
+              <div className="droppable-section" {...provided.droppableProps} ref={provided.innerRef}>
+                {businessRules.map((rule, index) => (
+                  <Draggable key={rule.name} draggableId={rule.name} index={index}>
+                    {provided => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className="relative block mt-2 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+                      >
+                        <table>
+                          <tr>
+                            <td className="pl-2 pr-2">Price</td>
+                            <td className="pl-2 pr-2">
+                              <Input placeholder="Min" value={rule.minValue} onChange={() => {}} />
+                            </td>
+                            <td className="pl-2 pr-2">
+                              <Input placeholder="Max" value={rule.maxValue} onChange={() => {}} />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td className="pl-2 pr-2">Weight</td>
+                            <td className="pl-2 pr-2">
+                              <Input placeholder="Min" value={rule.minWeight} onChange={() => {}} />
+                            </td>
+                            <td className="pl-2 pr-2">
+                              <Input placeholder="Max" value={rule.maxWeight} onChange={() => {}} />
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
     </div>
   );

@@ -64,7 +64,6 @@ export interface ParcelDbParsed extends ParcelToSave {
 }
 
 export interface BusinessRule {
-  id: number;
   name: string;
   sourceDepartment?: string;
   targetDepartment: string;
