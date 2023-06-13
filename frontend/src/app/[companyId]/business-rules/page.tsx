@@ -1,9 +1,9 @@
 'use client';
 
-import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
-import { BusinessRule } from '@/app/types';
-import { ChangeEventHandler, useState } from 'react';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { ChangeEventHandler } from 'react';
 import TopBar from './TopBar';
+import useBusinessRules from './useBusinessRules';
 
 interface BusinessRulesPageProps {
   params: {
@@ -12,48 +12,7 @@ interface BusinessRulesPageProps {
 }
 
 export default function BusinessRulesPage({ params: { companyId } }: BusinessRulesPageProps) {
-  const [businessRules, setBusinessRules] = useState<BusinessRule[]>([
-    {
-      name: 'needs-insurance',
-      sourceDepartment: 'Distribution center',
-      targetDepartment: 'Insurance',
-      minValue: 1000,
-    },
-    {
-      name: 'less-than-1kg',
-      targetDepartment: 'Mail',
-      maxWeight: 1,
-    },
-    {
-      name: 'between-1kg-and-10kg',
-      targetDepartment: 'Regular',
-      minWeight: 1,
-      maxWeight: 10,
-    },
-    {
-      name: 'over-10kg',
-      targetDepartment: 'Heavy',
-      minWeight: 10,
-    },
-  ]);
-
-  // TODO: Fix
-  const addRule = () =>
-    setBusinessRules(previous => [
-      { name: `new-rule-${Math.floor(Math.random() * 10000)}`, targetDepartment: 'Finished' },
-      ...previous,
-    ]);
-
-  const handleOnDragEnd: OnDragEndResponder = result => {
-    if (!result.destination) return;
-
-    setBusinessRules(previous => {
-      const items = Array.from(previous);
-      const [reorderedItem] = items.splice(result.source.index, 1);
-      items.splice(result.destination!.index, 0, reorderedItem);
-      return items;
-    });
-  };
+  const { businessRules, addRule, handleOnDragEnd } = useBusinessRules();
 
   return (
     <div className="sm:ml-64">
