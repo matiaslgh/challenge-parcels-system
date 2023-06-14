@@ -40,24 +40,26 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                         className="relative block mt-2 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
                       >
                         <table>
-                          <tr>
-                            <td className="pl-2 pr-2">Price</td>
-                            <td className="pl-2 pr-2">
-                              <Input placeholder="Min" value={rule.minValue} onChange={() => {}} />
-                            </td>
-                            <td className="pl-2 pr-2">
-                              <Input placeholder="Max" value={rule.maxValue} onChange={() => {}} />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="pl-2 pr-2">Weight</td>
-                            <td className="pl-2 pr-2">
-                              <Input placeholder="Min" value={rule.minWeight} onChange={() => {}} />
-                            </td>
-                            <td className="pl-2 pr-2">
-                              <Input placeholder="Max" value={rule.maxWeight} onChange={() => {}} />
-                            </td>
-                          </tr>
+                          <tbody>
+                            <tr>
+                              <td className="pl-2 pr-2">Price</td>
+                              <td className="pl-2 pr-2">
+                                <Input placeholder="Min" value={rule.minValue} onChange={() => {}} />
+                              </td>
+                              <td className="pl-2 pr-2">
+                                <Input placeholder="Max" value={rule.maxValue} onChange={() => {}} />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="pl-2 pr-2">Weight</td>
+                              <td className="pl-2 pr-2">
+                                <Input placeholder="Min" value={rule.minWeight} onChange={() => {}} />
+                              </td>
+                              <td className="pl-2 pr-2">
+                                <Input placeholder="Max" value={rule.maxWeight} onChange={() => {}} />
+                              </td>
+                            </tr>
+                          </tbody>
                         </table>
                       </div>
                     )}
