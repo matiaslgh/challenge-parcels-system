@@ -67,8 +67,8 @@ export interface BusinessRule {
   name: string;
   sourceDepartment?: string;
   targetDepartment: string;
-  minWeight?: number;
-  maxWeight?: number;
-  minValue?: number;
-  maxValue?: number;
+  minWeight?: number | string;
+  maxWeight?: number | string;
+  minValue?: number | string;
+  maxValue?: number | string;
 }

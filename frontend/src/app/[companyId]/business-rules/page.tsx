@@ -1,10 +1,10 @@
 'use client';
 
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { ChangeEventHandler, useState } from 'react';
+import { ChangeEventHandler } from 'react';
 import TopBar from './TopBar';
 import useBusinessRules from './useBusinessRules';
-import { BusinessRule } from '@/app/types';
+import AddConstraintDropdown from './AddConstraintDropdown';
 
 interface BusinessRulesPageProps {
   params: {
@@ -13,7 +13,7 @@ interface BusinessRulesPageProps {
 }
 
 export default function BusinessRulesPage({ params: { companyId } }: BusinessRulesPageProps) {
-  const { businessRules, addRule, handleOnDragEnd } = useBusinessRules();
+  const { businessRules, updateBusinessRule, addRule, handleOnDragEnd } = useBusinessRules();
 
   return (
     <div className="sm:ml-64">
@@ -42,18 +42,24 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                       >
                         <table>
                           <tbody>
-                            {rule.sourceDepartment && (
+                            <tr>
+                              <td className="pl-2 pr-2">Name</td>
+                              <td colSpan={2} className="pl-2 pr-2">
+                                <Input value={rule.name} onChange={() => {}} />
+                              </td>
+                            </tr>
+                            {rule.sourceDepartment !== undefined && (
                               <tr>
                                 <td className="pl-2 pr-2">Source</td>
                                 <td colSpan={2} className="pl-2 pr-2">
-                                  <Input placeholder="" value={rule.sourceDepartment} onChange={() => {}} />
+                                  <Input value={rule.sourceDepartment} onChange={() => {}} />
                                 </td>
                               </tr>
                             )}
                             <tr>
                               <td className="pl-2 pr-2">Target</td>
                               <td colSpan={2} className="pl-2 pr-2">
-                                <Input placeholder="" value={rule.targetDepartment} onChange={() => {}} />
+                                <Input value={rule.targetDepartment} onChange={() => {}} />
                               </td>
                             </tr>
                             {(rule.minValue !== undefined || rule.maxValue !== undefined) && (
@@ -80,7 +86,7 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                             )}
                             <tr>
                               <td colSpan={3} className="pt-2">
-                                <AddConstraint rule={rule} />
+                                <AddConstraintDropdown rule={rule} updateBusinessRule={updateBusinessRule} />
                               </td>
                             </tr>
                           </tbody>
@@ -102,66 +108,16 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
 interface InputProps {
   onChange: ChangeEventHandler<HTMLInputElement>;
   value?: string | number;
-  placeholder: string;
+  placeholder?: string;
 }
 function Input({ value, placeholder, onChange }: InputProps) {
   return (
     <input
       type="text"
       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full m-1 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-      placeholder={placeholder}
+      placeholder={placeholder ?? ''}
       value={value}
       onChange={onChange}
     />
-  );
-}
-
-function AddConstraint({ rule }: { rule: BusinessRule }) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <>
-      <button
-        id="dropdownDefaultButton"
-        data-dropdown-toggle="dropdown"
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        type="button"
-        onClick={() => setOpen(previous => !previous)}
-        onBlur={() => setOpen(false)}
-      >
-        Add constraint
-      </button>
-
-      <div
-        id="dropdown"
-        className={`z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 absolute ${
-          !open ? 'hidden' : ''
-        }`}
-      >
-        <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-          {rule.sourceDepartment === undefined && (
-            <li>
-              <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                by source department
-              </a>
-            </li>
-          )}
-          {rule.maxValue === undefined && rule.minValue === undefined && (
-            <li>
-              <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                by value
-              </a>
-            </li>
-          )}
-          {rule.maxWeight === undefined && rule.minWeight === undefined && (
-            <li>
-              <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                by weight
-              </a>
-            </li>
-          )}
-        </ul>
-      </div>
-    </>
   );
 }

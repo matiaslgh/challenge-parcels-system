@@ -49,5 +49,9 @@ export default function useBusinessRules() {
     });
   };
 
-  return { businessRules, addRule, handleOnDragEnd };
+  const updateBusinessRule = (ruleName: string, rule: BusinessRule) => {
+    setBusinessRules(previous => previous.map(previousRule => (previousRule.name === ruleName ? rule : previousRule)));
+  };
+
+  return { businessRules, updateBusinessRule, addRule, handleOnDragEnd };
 }
