@@ -5,6 +5,7 @@ import { ChangeEventHandler } from 'react';
 import TopBar from './TopBar';
 import useBusinessRules from './useBusinessRules';
 import AddConstraintDropdown from './AddConstraintDropdown';
+import { XCircleIcon } from '@heroicons/react/24/outline';
 
 interface BusinessRulesPageProps {
   params: {
@@ -54,6 +55,19 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                                 <td colSpan={2} className="pl-2 pr-2">
                                   <Input value={rule.sourceDepartment} onChange={() => {}} />
                                 </td>
+                                <td>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      updateBusinessRule(rule.name, {
+                                        ...rule,
+                                        sourceDepartment: undefined,
+                                      });
+                                    }}
+                                  >
+                                    <XCircleIcon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+                                  </button>
+                                </td>
                               </tr>
                             )}
                             <tr>
@@ -71,6 +85,20 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                                 <td className="pl-2 pr-2">
                                   <Input placeholder="Max" value={rule.maxValue} onChange={() => {}} />
                                 </td>
+                                <td>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      updateBusinessRule(rule.name, {
+                                        ...rule,
+                                        minValue: undefined,
+                                        maxValue: undefined,
+                                      });
+                                    }}
+                                  >
+                                    <XCircleIcon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+                                  </button>
+                                </td>
                               </tr>
                             )}
                             {(rule.minWeight !== undefined || rule.maxWeight !== undefined) && (
@@ -82,13 +110,33 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                                 <td className="pl-2 pr-2">
                                   <Input placeholder="Max" value={rule.maxWeight} onChange={() => {}} />
                                 </td>
+                                <td>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      updateBusinessRule(rule.name, {
+                                        ...rule,
+                                        minWeight: undefined,
+                                        maxWeight: undefined,
+                                      });
+                                    }}
+                                  >
+                                    <XCircleIcon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+                                  </button>
+                                </td>
                               </tr>
                             )}
-                            <tr>
-                              <td colSpan={3} className="pt-2">
-                                <AddConstraintDropdown rule={rule} updateBusinessRule={updateBusinessRule} />
-                              </td>
-                            </tr>
+                            {!(
+                              (rule.minWeight !== undefined || rule.maxWeight !== undefined) &&
+                              (rule.minValue !== undefined || rule.maxValue !== undefined) &&
+                              rule.sourceDepartment !== undefined
+                            ) && (
+                              <tr>
+                                <td colSpan={3} className="pt-2">
+                                  <AddConstraintDropdown rule={rule} updateBusinessRule={updateBusinessRule} />
+                                </td>
+                              </tr>
+                            )}
                           </tbody>
                         </table>
                       </div>
