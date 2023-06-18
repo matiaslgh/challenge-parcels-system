@@ -72,3 +72,11 @@ export interface BusinessRule {
   minValue?: number | string;
   maxValue?: number | string;
 }
+
+export interface BusinessRulesDbParsed {
+  id: string;
+  companyId: string;
+  rules: BusinessRule[];
+  createdAt: string;
+  updatedAt: string;
+}

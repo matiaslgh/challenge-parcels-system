@@ -14,7 +14,7 @@ interface BusinessRulesPageProps {
 }
 
 export default function BusinessRulesPage({ params: { companyId } }: BusinessRulesPageProps) {
-  const { businessRules, updateBusinessRule, addRule, handleOnDragEnd } = useBusinessRules();
+  const { businessRules, updateBusinessRule, addRule, handleOnDragEnd } = useBusinessRules(companyId);
 
   return (
     <div className="sm:ml-64">
