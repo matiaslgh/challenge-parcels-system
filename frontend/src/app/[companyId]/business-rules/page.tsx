@@ -14,11 +14,11 @@ interface BusinessRulesPageProps {
 }
 
 export default function BusinessRulesPage({ params: { companyId } }: BusinessRulesPageProps) {
-  const { businessRules, updateBusinessRule, addRule, handleOnDragEnd } = useBusinessRules(companyId);
+  const { businessRules, updateBusinessRule, addRule, handleOnDragEnd, saveRules } = useBusinessRules(companyId);
 
   return (
     <div className="sm:ml-64">
-      <TopBar companyId={companyId} />
+      <TopBar saveRules={saveRules} />
       <div className="mt-16 p-4">
         <button
           type="button"

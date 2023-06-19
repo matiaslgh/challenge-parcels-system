@@ -1,4 +1,4 @@
-import { BusinessRulesDbParsed } from '@/app/types';
+import { BusinessRule, BusinessRulesDbParsed } from '@/app/types';
 import { buildApiUrl } from './common';
 
 const RESOURCE = 'business-rules';
@@ -10,4 +10,24 @@ export async function getBusinessRules(companyId: string): Promise<BusinessRules
   }
 
   return response.json();
+}
+
+export async function upsertBusinessRules(
+  companyId: string,
+  rules: BusinessRule[],
+): Promise<BusinessRulesDbParsed | null> {
+  const response = await fetch(buildApiUrl(`companies/${companyId}/${RESOURCE}`), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(rules),
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    console.error('There was an error creating the company');
+    return null;
+  }
+  return await response.json();
 }

@@ -3,13 +3,13 @@
 import { MouseEventHandler } from 'react';
 
 interface TopBarProps {
-  companyId: string;
+  saveRules: () => void;
 }
 
-export default function TopBar({ companyId }: TopBarProps) {
+export default function TopBar({ saveRules }: TopBarProps) {
   const onSave: MouseEventHandler<HTMLButtonElement> = event => {
     event.preventDefault();
-    console.log('Click');
+    saveRules();
   };
 
   return (

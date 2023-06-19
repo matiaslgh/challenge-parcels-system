@@ -1,4 +1,4 @@
-import { getBusinessRules } from '@/api/business-rules';
+import { getBusinessRules, upsertBusinessRules } from '@/api/business-rules';
 import { BusinessRule } from '@/app/types';
 import { useEffect, useState } from 'react';
 import { OnDragEndResponder } from 'react-beautiful-dnd';
@@ -34,5 +34,12 @@ export default function useBusinessRules(companyId: string) {
     setBusinessRules(previous => previous.map(previousRule => (previousRule.name === ruleName ? rule : previousRule)));
   };
 
-  return { businessRules, updateBusinessRule, addRule, handleOnDragEnd };
+  const saveRules = async () => {
+    const response = await upsertBusinessRules(companyId, businessRules);
+    if (response !== null) {
+      setBusinessRules(response.rules);
+    }
+  };
+
+  return { businessRules, updateBusinessRule, addRule, handleOnDragEnd, saveRules };
 }
