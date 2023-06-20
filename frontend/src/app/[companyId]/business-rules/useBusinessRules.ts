@@ -41,5 +41,9 @@ export default function useBusinessRules(companyId: string) {
     }
   };
 
-  return { businessRules, updateBusinessRule, addRule, handleOnDragEnd, saveRules };
+  const removeRule = (index: number) => {
+    setBusinessRules(previous => previous.filter((_, i) => i !== index));
+  };
+
+  return { businessRules, updateBusinessRule, addRule, removeRule, handleOnDragEnd, saveRules };
 }

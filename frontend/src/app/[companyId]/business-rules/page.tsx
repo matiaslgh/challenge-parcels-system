@@ -14,7 +14,8 @@ interface BusinessRulesPageProps {
 }
 
 export default function BusinessRulesPage({ params: { companyId } }: BusinessRulesPageProps) {
-  const { businessRules, updateBusinessRule, addRule, handleOnDragEnd, saveRules } = useBusinessRules(companyId);
+  const { businessRules, updateBusinessRule, addRule, removeRule, handleOnDragEnd, saveRules } =
+    useBusinessRules(companyId);
 
   return (
     <div className="sm:ml-64">
@@ -41,6 +42,10 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                         {...provided.dragHandleProps}
                         className="relative block mt-2 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
                       >
+                        <button className="absolute top-1 right-1" type="button" onClick={() => removeRule(index)}>
+                          <XCircleIcon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+                        </button>
+
                         <table>
                           <tbody>
                             <tr>
