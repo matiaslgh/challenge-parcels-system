@@ -51,14 +51,27 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                             <tr>
                               <td className="pl-2 pr-2">Name</td>
                               <td colSpan={2} className="pl-2 pr-2">
-                                <Input value={rule.name} onChange={() => {}} />
+                                <Input
+                                  value={rule.name}
+                                  onChange={e =>
+                                    updateBusinessRule(rule.name, { ...rule, name: e.currentTarget.value })
+                                  }
+                                />
                               </td>
                             </tr>
                             {rule.sourceDepartment !== undefined && (
                               <tr>
                                 <td className="pl-2 pr-2">Source</td>
                                 <td colSpan={2} className="pl-2 pr-2">
-                                  <Input value={rule.sourceDepartment} onChange={() => {}} />
+                                  <Input
+                                    value={rule.sourceDepartment}
+                                    onChange={e =>
+                                      updateBusinessRule(rule.name, {
+                                        ...rule,
+                                        sourceDepartment: e.currentTarget.value,
+                                      })
+                                    }
+                                  />
                                 </td>
                                 <td>
                                   <button
@@ -78,17 +91,43 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                             <tr>
                               <td className="pl-2 pr-2">Target</td>
                               <td colSpan={2} className="pl-2 pr-2">
-                                <Input value={rule.targetDepartment} onChange={() => {}} />
+                                <Input
+                                  value={rule.targetDepartment}
+                                  onChange={e =>
+                                    updateBusinessRule(rule.name, {
+                                      ...rule,
+                                      targetDepartment: e.currentTarget.value,
+                                    })
+                                  }
+                                />
                               </td>
                             </tr>
                             {(rule.minValue !== undefined || rule.maxValue !== undefined) && (
                               <tr>
                                 <td className="pl-2 pr-2">Price</td>
                                 <td className="pl-2 pr-2">
-                                  <Input placeholder="Min" value={rule.minValue} onChange={() => {}} />
+                                  <Input
+                                    placeholder="Min"
+                                    value={rule.minValue}
+                                    onChange={e =>
+                                      updateBusinessRule(rule.name, {
+                                        ...rule,
+                                        minValue: e.currentTarget.value,
+                                      })
+                                    }
+                                  />
                                 </td>
                                 <td className="pl-2 pr-2">
-                                  <Input placeholder="Max" value={rule.maxValue} onChange={() => {}} />
+                                  <Input
+                                    placeholder="Max"
+                                    value={rule.maxValue}
+                                    onChange={e =>
+                                      updateBusinessRule(rule.name, {
+                                        ...rule,
+                                        maxValue: e.currentTarget.value,
+                                      })
+                                    }
+                                  />
                                 </td>
                                 <td>
                                   <button
@@ -110,10 +149,28 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                               <tr>
                                 <td className="pl-2 pr-2">Weight</td>
                                 <td className="pl-2 pr-2">
-                                  <Input placeholder="Min" value={rule.minWeight} onChange={() => {}} />
+                                  <Input
+                                    placeholder="Min"
+                                    value={rule.minWeight}
+                                    onChange={e =>
+                                      updateBusinessRule(rule.name, {
+                                        ...rule,
+                                        minWeight: e.currentTarget.value,
+                                      })
+                                    }
+                                  />
                                 </td>
                                 <td className="pl-2 pr-2">
-                                  <Input placeholder="Max" value={rule.maxWeight} onChange={() => {}} />
+                                  <Input
+                                    placeholder="Max"
+                                    value={rule.maxWeight}
+                                    onChange={e =>
+                                      updateBusinessRule(rule.name, {
+                                        ...rule,
+                                        maxWeight: e.currentTarget.value,
+                                      })
+                                    }
+                                  />
                                 </td>
                                 <td>
                                   <button
