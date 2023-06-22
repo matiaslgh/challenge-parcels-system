@@ -32,6 +32,7 @@ describe("business-rule's logic", () => {
     it('should return the target department that matches the first rule based on weight', () => {
       const rules: BusinessRule[] = [
         {
+          id: 'Rule1',
           name: 'Rule1',
           sourceDepartment: 'DepartmentA',
           targetDepartment: 'DepartmentB',
@@ -39,6 +40,7 @@ describe("business-rule's logic", () => {
           maxWeight: 10,
         },
         {
+          id: 'Rule2',
           name: 'Rule2',
           sourceDepartment: 'DepartmentA',
           targetDepartment: 'DepartmentC',
@@ -57,6 +59,7 @@ describe("business-rule's logic", () => {
     it('should return the target department that matches the first rule based on value', () => {
       const rules: BusinessRule[] = [
         {
+          id: 'Rule1',
           name: 'Rule1',
           sourceDepartment: 'DepartmentA',
           targetDepartment: 'DepartmentB',
@@ -64,6 +67,7 @@ describe("business-rule's logic", () => {
           maxValue: 2000,
         },
         {
+          id: 'Rule2',
           name: 'Rule2',
           sourceDepartment: 'DepartmentA',
           targetDepartment: 'DepartmentC',
@@ -82,6 +86,7 @@ describe("business-rule's logic", () => {
     it('should return the target department that matches the second rule based on weight', () => {
       const rules: BusinessRule[] = [
         {
+          id: 'Rule1',
           name: 'Rule1',
           sourceDepartment: 'DepartmentA',
           targetDepartment: 'DepartmentB',
@@ -89,6 +94,7 @@ describe("business-rule's logic", () => {
           maxWeight: 10,
         },
         {
+          id: 'Rule2',
           name: 'Rule2',
           sourceDepartment: 'DepartmentA',
           targetDepartment: 'DepartmentC',
@@ -107,6 +113,7 @@ describe("business-rule's logic", () => {
     it('should return the target department that matches the second rule based on value', () => {
       const rules: BusinessRule[] = [
         {
+          id: 'Rule1',
           name: 'Rule1',
           sourceDepartment: 'DepartmentA',
           targetDepartment: 'DepartmentB',
@@ -114,6 +121,7 @@ describe("business-rule's logic", () => {
           maxValue: 2000,
         },
         {
+          id: 'Rule2',
           name: 'Rule2',
           sourceDepartment: 'DepartmentA',
           targetDepartment: 'DepartmentC',
@@ -132,6 +140,7 @@ describe("business-rule's logic", () => {
     it('should return the target department that matches the rule based on weight when source department is missing', () => {
       const rules: BusinessRule[] = [
         {
+          id: 'Rule1',
           name: 'Rule1',
           targetDepartment: 'DepartmentB',
           minWeight: 5,
@@ -149,6 +158,7 @@ describe("business-rule's logic", () => {
     it('should return the target department that matches the rule based on value when source department is missing', () => {
       const rules: BusinessRule[] = [
         {
+          id: 'Rule1',
           name: 'Rule1',
           targetDepartment: 'DepartmentB',
           minValue: 1000,
@@ -165,6 +175,7 @@ describe("business-rule's logic", () => {
 
     it('should return the target department that matches weight, value and source department', () => {
       const matchingRule: BusinessRule = {
+        id: 'MatchingRule',
         name: 'MatchingRule',
         sourceDepartment: 'DepartmentA',
         targetDepartment: 'DepartmentC',
@@ -175,13 +186,18 @@ describe("business-rule's logic", () => {
       };
 
       const rules: BusinessRule[] = [
-        { ...matchingRule, name: 'Rule1', sourceDepartment: 'DepartmentB' },
-        { ...matchingRule, name: 'Rule2', minWeight: 90 },
-        { ...matchingRule, name: 'Rule3', minValue: 1900 },
-        { ...matchingRule, name: 'Rule4', maxWeight: 3 },
-        { ...matchingRule, name: 'Rule5', maxValue: 1100 },
+        { ...matchingRule, id: 'Rule1', name: 'Rule1', sourceDepartment: 'DepartmentB' },
+        { ...matchingRule, id: 'Rule2', name: 'Rule2', minWeight: 90 },
+        { ...matchingRule, id: 'Rule3', name: 'Rule3', minValue: 1900 },
+        { ...matchingRule, id: 'Rule4', name: 'Rule4', maxWeight: 3 },
+        { ...matchingRule, id: 'Rule5', name: 'Rule5', maxValue: 1100 },
         matchingRule,
-        { ...matchingRule, name: 'AnotherMatchingRule', targetDepartment: 'AnotherDepartment' },
+        {
+          ...matchingRule,
+          id: 'AnotherMatchingRule',
+          name: 'AnotherMatchingRule',
+          targetDepartment: 'AnotherDepartment',
+        },
       ];
 
       const parcel = buildParcel({ sourceDepartment: 'DepartmentA', weight: 50, value: 1500 });
@@ -194,6 +210,7 @@ describe("business-rule's logic", () => {
     it('should return null when no matching rule is found', () => {
       const rules: BusinessRule[] = [
         {
+          id: 'Rule1',
           name: 'Rule1',
           sourceDepartment: 'DepartmentA',
           targetDepartment: 'DepartmentB',
@@ -203,6 +220,7 @@ describe("business-rule's logic", () => {
           maxValue: 2000,
         },
         {
+          id: 'Rule2',
           name: 'Rule2',
           sourceDepartment: 'DepartmentA',
           targetDepartment: 'DepartmentC',

@@ -32,18 +32,18 @@ export default function AddConstraintDropdown({ rule, updateBusinessRule }: AddC
             <li>
               <Item
                 text="by source department"
-                onClick={() => updateBusinessRule(rule.name, { ...rule, sourceDepartment: '' })}
+                onClick={() => updateBusinessRule(rule.id, { ...rule, sourceDepartment: '' })}
               />
             </li>
           )}
           {rule.maxValue === undefined && rule.minValue === undefined && (
             <li>
-              <Item text="by value" onClick={() => updateBusinessRule(rule.name, { ...rule, minValue: '' })} />
+              <Item text="by value" onClick={() => updateBusinessRule(rule.id, { ...rule, minValue: '' })} />
             </li>
           )}
           {rule.maxWeight === undefined && rule.minWeight === undefined && (
             <li>
-              <Item text="by weight" onClick={() => updateBusinessRule(rule.name, { ...rule, minWeight: '' })} />
+              <Item text="by weight" onClick={() => updateBusinessRule(rule.id, { ...rule, minWeight: '' })} />
             </li>
           )}
         </ul>

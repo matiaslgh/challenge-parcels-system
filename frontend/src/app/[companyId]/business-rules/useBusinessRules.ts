@@ -13,11 +13,10 @@ export default function useBusinessRules(companyId: string) {
     });
   }, [companyId]);
 
-  const addRule = () =>
-    setBusinessRules(previous => [
-      { name: `new-rule-${Math.floor(Math.random() * 10000)}`, targetDepartment: 'Finished' },
-      ...previous,
-    ]);
+  const addRule = () => {
+    const id = `${Math.floor(Math.random() * 10000)}`;
+    setBusinessRules(previous => [{ id, name: `new-rule-${id}`, targetDepartment: 'Finished' }, ...previous]);
+  };
 
   const handleOnDragEnd: OnDragEndResponder = result => {
     if (!result.destination) return;
@@ -30,8 +29,8 @@ export default function useBusinessRules(companyId: string) {
     });
   };
 
-  const updateBusinessRule = (ruleName: string, rule: BusinessRule) => {
-    setBusinessRules(previous => previous.map(previousRule => (previousRule.name === ruleName ? rule : previousRule)));
+  const updateBusinessRule = (ruleId: string, rule: BusinessRule) => {
+    setBusinessRules(previous => previous.map(previousRule => (previousRule.id === ruleId ? rule : previousRule)));
   };
 
   const saveRules = async () => {

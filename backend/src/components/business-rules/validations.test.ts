@@ -2,6 +2,7 @@ import { BusinessRule } from './types';
 import { throwIfInvalidBusinessRules } from './validations';
 
 const validBusinessRule1: Partial<BusinessRule> = {
+  id: 'Rule1',
   name: 'Rule1',
   sourceDepartment: 'DepartmentA',
   targetDepartment: 'DepartmentB',
@@ -22,6 +23,12 @@ describe('business-rule validations', () => {
   describe('throwIfInvalidBusinessRules', () => {
     it('should not throw an error for valid business rules', () => {
       expect(() => throwIfInvalidBusinessRules(validBusinessRules)).not.toThrow();
+    });
+
+    it('should throw an error for business rules with missing id', () => {
+      const invalidBusinessRule = { ...validBusinessRule1 };
+      delete invalidBusinessRule.id;
+      expect(() => throwIfInvalidBusinessRules([invalidBusinessRule])).toThrow('"[0].id" is required');
     });
 
     it('should throw an error for business rules with missing name', () => {

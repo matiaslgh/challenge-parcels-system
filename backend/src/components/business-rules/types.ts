@@ -1,4 +1,5 @@
 export interface BusinessRule {
+  id: string;
   name: string;
   sourceDepartment?: string;
   targetDepartment: string;

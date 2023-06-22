@@ -79,23 +79,27 @@ describe('/api/companies/:companyId/containers', () => {
 
     businessRules = [
       {
+        id: '1',
         name: 'needs-insurance',
         sourceDepartment: 'Distribution center',
         targetDepartment: 'Insurance',
         minValue: 1000,
       },
       {
+        id: '2',
         name: 'less-than-1kg',
         targetDepartment: 'Mail',
         maxWeight: 1,
       },
       {
+        id: '3',
         name: 'between-1kg-and-10kg',
         targetDepartment: 'Regular',
         minWeight: 1,
         maxWeight: 10,
       },
       {
+        id: '4',
         name: 'over-10kg',
         targetDepartment: 'Heavy',
         minWeight: 10,

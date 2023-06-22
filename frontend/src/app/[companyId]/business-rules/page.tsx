@@ -34,7 +34,7 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
             {provided => (
               <div className="droppable-section" {...provided.droppableProps} ref={provided.innerRef}>
                 {businessRules.map((rule, index) => (
-                  <Draggable key={rule.name} draggableId={rule.name} index={index}>
+                  <Draggable key={rule.id} draggableId={rule.id} index={index}>
                     {provided => (
                       <div
                         ref={provided.innerRef}
@@ -53,9 +53,7 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                               <td colSpan={2} className="pl-2 pr-2">
                                 <Input
                                   value={rule.name}
-                                  onChange={e =>
-                                    updateBusinessRule(rule.name, { ...rule, name: e.currentTarget.value })
-                                  }
+                                  onChange={e => updateBusinessRule(rule.id, { ...rule, name: e.currentTarget.value })}
                                 />
                               </td>
                             </tr>
@@ -66,7 +64,7 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                                   <Input
                                     value={rule.sourceDepartment}
                                     onChange={e =>
-                                      updateBusinessRule(rule.name, {
+                                      updateBusinessRule(rule.id, {
                                         ...rule,
                                         sourceDepartment: e.currentTarget.value,
                                       })
@@ -77,7 +75,7 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                                   <button
                                     type="button"
                                     onClick={() => {
-                                      updateBusinessRule(rule.name, {
+                                      updateBusinessRule(rule.id, {
                                         ...rule,
                                         sourceDepartment: undefined,
                                       });
@@ -94,7 +92,7 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                                 <Input
                                   value={rule.targetDepartment}
                                   onChange={e =>
-                                    updateBusinessRule(rule.name, {
+                                    updateBusinessRule(rule.id, {
                                       ...rule,
                                       targetDepartment: e.currentTarget.value,
                                     })
@@ -110,7 +108,7 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                                     placeholder="Min"
                                     value={rule.minValue}
                                     onChange={e =>
-                                      updateBusinessRule(rule.name, {
+                                      updateBusinessRule(rule.id, {
                                         ...rule,
                                         minValue: e.currentTarget.value,
                                       })
@@ -122,7 +120,7 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                                     placeholder="Max"
                                     value={rule.maxValue}
                                     onChange={e =>
-                                      updateBusinessRule(rule.name, {
+                                      updateBusinessRule(rule.id, {
                                         ...rule,
                                         maxValue: e.currentTarget.value,
                                       })
@@ -133,7 +131,7 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                                   <button
                                     type="button"
                                     onClick={() => {
-                                      updateBusinessRule(rule.name, {
+                                      updateBusinessRule(rule.id, {
                                         ...rule,
                                         minValue: undefined,
                                         maxValue: undefined,
@@ -153,7 +151,7 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                                     placeholder="Min"
                                     value={rule.minWeight}
                                     onChange={e =>
-                                      updateBusinessRule(rule.name, {
+                                      updateBusinessRule(rule.id, {
                                         ...rule,
                                         minWeight: e.currentTarget.value,
                                       })
@@ -165,7 +163,7 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                                     placeholder="Max"
                                     value={rule.maxWeight}
                                     onChange={e =>
-                                      updateBusinessRule(rule.name, {
+                                      updateBusinessRule(rule.id, {
                                         ...rule,
                                         maxWeight: e.currentTarget.value,
                                       })
@@ -176,7 +174,7 @@ export default function BusinessRulesPage({ params: { companyId } }: BusinessRul
                                   <button
                                     type="button"
                                     onClick={() => {
-                                      updateBusinessRule(rule.name, {
+                                      updateBusinessRule(rule.id, {
                                         ...rule,
                                         minWeight: undefined,
                                         maxWeight: undefined,

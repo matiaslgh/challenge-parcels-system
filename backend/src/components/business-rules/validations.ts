@@ -5,6 +5,7 @@ import { InvalidInputError } from '../../common/app-error';
 import { getDuplicateKeys, validate } from '../../common/validation';
 
 const businessRuleSchema = Joi.object({
+  id: Joi.string().required(),
   name: Joi.string().required(),
   sourceDepartment: Joi.string(),
   targetDepartment: Joi.string().required(),
